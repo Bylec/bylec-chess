@@ -20,8 +20,6 @@ mix.webpackConfig({
  |
  */
 
-mix.copy('node_modules/bootstrap/dist/css//bootstrap.css', 'resources/sass/bootstrap.scss');
-
 mix.js([
     'node_modules/popper.js/dist/popper.min.js',
     'node_modules/bootstrap/dist/js/bootstrap.js',
@@ -31,5 +29,4 @@ mix.js([
 mix.js([
     'resources/js/app.js'
 ], 'public/js/vue.js')
-   .sass(['resources/sass/app.scss',
-            'resources/sass/bootstrap.scss'], 'public/css/app.css');
+   .sass('resources/sass/app.scss', 'public/css/app.css');

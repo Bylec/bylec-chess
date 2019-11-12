@@ -10,6 +10,11 @@
                 draggable: true,
                 position: 'start',
             })
+
+            Echo.channel('move-made')
+                .listen('MoveMade', (e) => {
+                    chessgame.makeMove(e.move)
+                })
         }
     };
 </script>

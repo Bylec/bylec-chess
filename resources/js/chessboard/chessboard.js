@@ -11,18 +11,24 @@ class chess {
 
     onDrop(source, target, piece, newPos, oldPos, orientation) {
         if (this.isAllowedToMove()) {
-            this.sendMove()
+            this.sendMove([source, target])
                 .then(response => {
                     this.setIsAllowedToMove(false)
                 })
                 .catch(err => {
                     this.setIsAllowedToMove(true)
+                    this.setPreviousPosition(oldPos, false)
                 })
         } else {
             setTimeout(() => {
-                this.board.position(oldPos, false)
+                this.setPreviousPosition(oldPos, false)
             }, 1)
         }
+    }
+
+    setPreviousPosition(oldPos)
+    {
+        this.board.position(oldPos, false)
     }
 
     isAllowedToMove() {
@@ -33,8 +39,13 @@ class chess {
         this.allowedToMove = isAllowed;
     }
 
-    sendMove() {
-        return axios.get('api/test')
+    sendMove(moves) {
+        return axios.post('api/move', moves)
+    }
+
+    makeMove(moves) {
+        this.board.move(moves.join('-'))
+        this.setIsAllowedToMove(true)
     }
 
 }

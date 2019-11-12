@@ -20,5 +20,13 @@
     "vue-template-compiler": "^2.6.10",
     "jquery": "^3.4.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@chrisoakman/chessboardjs": "^1.0.0",
+    "bootstrap": "^4.3.1",
+    "laravel-echo": "^1.6.1",
+    "popper.js": "^1.16.0",
+    "pusher-js": "^5.0.2",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3"
+  }
 }
