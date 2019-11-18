@@ -2,12 +2,27 @@
 
 namespace App\Chess;
 
+use App\Chess\Drivers\PositionDriverInterface;
+
 class Chessgame
 {
 
-    public function run(Move $move)
+    protected $move;
+    protected $position;
+
+    public function run(PositionDriverInterface $positionDriver, Move $move)
     {
-        return 'elo elo';
+        $position = $positionDriver->getPosition();
+
+        $this->validateMove($position, $move);
+
+    }
+
+    protected function validateMove(Position $position, Move $move)
+    {
+
+
+
     }
 
 }

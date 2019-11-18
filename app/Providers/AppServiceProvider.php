@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Chess\Chessgame;
-use Facade\App\Chess\Chessgame as ChessgameFacade;
+use App\Chess\Drivers\CacheDriver;
+use App\Chess\Drivers\PositionDriverInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ChessgameFacade::class, Chessgame::class);
+        $this->app->bind(PositionDriverInterface::class, CacheDriver::class);
     }
 
     /**

@@ -2,39 +2,53 @@
 
 namespace App\Chess;
 
+use App\Exceptions\MoveValidationFailed;
+
 class Move
 {
+
+    protected $fromCoordinate;
+    protected $toCoordinate;
 
     /**
      * Move constructor.
      * @param array $coordinatePairs
-     * @throws \Exception
+     * @throws MoveValidationFailed
      */
     public function __construct(array $coordinatePairs)
     {
         $this->validateCoordinatePairs($coordinatePairs);
+
+        $this->fromCoordinate = $coordinatePairs[0];
+        $this->toCoordinate = $coordinatePairs[1];
     }
 
     protected function validateCoordinatePairs($coordinatePairs)
     {
         if (count($coordinatePairs) !== 2) {
-            throw new \Exception('Only two coordinates can describe move.');
+            throw new MoveValidationFailed('Only two coordinates can describe move.');
         }
 
         collect($coordinatePairs)->each(function($coordinate) {
-
+            $this->validateCoordinate($coordinate);
         });
     }
 
-    protected function validateMove($coordinate)
+    protected function validateCoordinate($coordinate)
     {
-        if (count($coordinate) !== 2) {
-            throw new \Exception('Coordinate must contain only one letter and one number.');
+        if (strlen($coordinate) !== 2) {
+            throw new MoveValidationFailed('Coordinate must contain only one letter and one number.');
         }
 
-        if ($coordinate[0] < 'a' || $coordinate[0] > 'h' || $coordinate[1] < 1 || $coordinate[1] > 8) {
-            throw new \Exception('');
+        if (!is_string($coordinate[0]) || !ctype_alpha($coordinate[0]) || $coordinate[0] < 'a' || $coordinate[0] > 'h' ||
+            !is_numeric($coordinate[1]) || !ctype_digit($coordinate[1]) || $coordinate[1] < 1 || $coordinate[1] > 8) {
+            throw new MoveValidationFailed('Coordinate range must be between a1 and h8.');
         }
+    }
+
+    public function getFullCoordinate() : string
+    {
+        return $this->fromCoordinate . '-' . $this->toCoordinate;
     }
 
 }
