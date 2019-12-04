@@ -16,6 +16,9 @@ class MoveController extends Controller
     public function index(PositionDriverInterface $positionDriver)
     {
         $position = $positionDriver->getPosition();
+
+
+
         $positionDriver->setPosition($position);
 
         return response()->json($position);

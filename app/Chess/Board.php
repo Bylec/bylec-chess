@@ -7,6 +7,8 @@ use JsonSerializable;
 class Board implements JsonSerializable
 {
 
+    const STARTING_SETUP = '{"a1":"r","b1":"n","c1":"b","d1":"q","e1":"k","f1":"b","g1":"n","h1":"r"}';
+
     protected $setup;
 
     public function jsonSerialize()
@@ -23,7 +25,7 @@ class Board implements JsonSerializable
 
     public function setStartingSetup()
     {
-        $this->setup = 'startingSetup';
+        $this->setup = self::STARTING_SETUP;
         return $this;
     }
 

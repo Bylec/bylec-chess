@@ -8,6 +8,9 @@ use JsonSerializable;
 class Position implements JsonSerializable
 {
 
+    const WHITE = 'white';
+    const BLACK = 'black';
+
     protected $toMove = null;
     protected $board = null;
 
@@ -55,7 +58,7 @@ class Position implements JsonSerializable
     public static function getStartingPosition() : Position
     {
         $position = new self();
-        $position->toMove = 'white';
+        $position->toMove = self::WHITE;
         $position->board = app(Board::class)->setStartingSetup();
         return $position;
     }

@@ -10,9 +10,16 @@ class Chessgame
     protected $move;
     protected $position;
 
-    public function run(PositionDriverInterface $positionDriver, Move $move)
+    protected $positionDriver;
+
+    public function __construct(PositionDriverInterface $positionDriver)
     {
-        $position = $positionDriver->getPosition();
+        $this->positionDriver = $positionDriver;
+    }
+
+    public function run( Move $move)
+    {
+        $position = $this->positionDriver->getPosition();
 
         $this->validateMove($position, $move);
 

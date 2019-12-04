@@ -28,7 +28,7 @@ class PositionTest extends TestCase
 
         $position = Position::resolveToPosition($json);
 
-        $this->assertEquals('white', $position->getToMove());
+        $this->assertEquals(Position::WHITE, $position->getToMove());
         $this->assertInstanceOf(Board::class, $position->getBoard());
         $this->assertEquals('setup', $position->getBoard()->getSetup());
     }
@@ -40,9 +40,9 @@ class PositionTest extends TestCase
     {
         $position = Position::getStartingPosition();
 
-        $this->assertEquals('white', $position->getToMove());
+        $this->assertEquals(Position::WHITE, $position->getToMove());
         $this->assertInstanceOf(Board::class, $position->getBoard());
-        $this->assertEquals('startingSetup', $position->getBoard()->getSetup());
+        $this->assertEquals(Board::STARTING_SETUP, $position->getBoard()->getSetup());
     }
 
 }

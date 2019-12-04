@@ -16,7 +16,7 @@ class BoardTest extends TestCase
     {
         $board = app(Board::class)->setStartingSetup();
 
-        $this->assertEquals('startingSetup', $board->getSetup());
+        $this->assertEquals(Board::STARTING_SETUP, $board->getSetup());
     }
 
     /**
