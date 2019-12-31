@@ -3,6 +3,7 @@
 namespace App\Chess;
 
 use App\Chess\Drivers\PositionDriverInterface;
+use App\Chess\Validation\RulesValidator;
 
 class Chessgame
 {
@@ -17,19 +18,16 @@ class Chessgame
         $this->positionDriver = $positionDriver;
     }
 
-    public function run( Move $move)
+    public function run(Move $move): bool
     {
         $position = $this->positionDriver->getPosition();
 
-        $this->validateMove($position, $move);
-
+        return $this->validateMove(new RulesValidator(), $position, $move);
     }
 
-    protected function validateMove(Position $position, Move $move)
+    protected function validateMove(RulesValidator $validator, Position $position, Move $move): bool
     {
-
-
-
+        return $validator->validate($position, $move);
     }
 
 }

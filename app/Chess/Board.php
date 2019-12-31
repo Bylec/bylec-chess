@@ -7,7 +7,25 @@ use JsonSerializable;
 class Board implements JsonSerializable
 {
 
-    const STARTING_SETUP = '{"a1":"r","b1":"n","c1":"b","d1":"q","e1":"k","f1":"b","g1":"n","h1":"r"}';
+    const STARTING_SETUP =
+        '{
+          "a1": "r",
+          "b1": "n",
+          "c1": "b",
+          "d1": "q",
+          "e1": "k",
+          "f1": "b",
+          "g1": "n",
+          "h1": "r",
+          "a2": "p",
+          "b2": "p",
+          "c2": "p",
+          "d2": "p",
+          "e2": "p",
+          "f2": "p",
+          "g2": "p",
+          "h2": "p"
+        }';
 
     protected $setup;
 

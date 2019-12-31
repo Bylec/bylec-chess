@@ -2,7 +2,14 @@
 
 namespace App\Chess;
 
+use App\Chess\Pieces\Bishop;
+use App\Chess\Pieces\King;
+use App\Chess\Pieces\Knight;
+use App\Chess\Pieces\Pawn;
+use App\Chess\Pieces\Queen;
+use App\Chess\Pieces\Rook;
 use App\Exceptions\ResolvePositionException;
+use Exception;
 use JsonSerializable;
 
 class Position implements JsonSerializable
@@ -12,7 +19,23 @@ class Position implements JsonSerializable
     const BLACK = 'black';
 
     protected $toMove = null;
+
     protected $board = null;
+
+    static $pieceMap = [
+        'p' => Pawn::class,
+        'P' => Pawn::class,
+        'r' => Rook::class,
+        'R'=> Rook::class,
+        'n' => Knight::class,
+        'N' => Knight::class,
+        'b' => Bishop::class,
+        'B' => Bishop::class,
+        'k' => King::class,
+        'K' => King::class,
+        'q' => Queen::class,
+        'Q' => Queen::class,
+    ];
 
     public function jsonSerialize()
     {
@@ -27,7 +50,7 @@ class Position implements JsonSerializable
         return $this->toMove;
     }
 
-    public function getBoard()
+    public function getBoard(): Board
     {
         return $this->board;
     }
@@ -66,6 +89,22 @@ class Position implements JsonSerializable
     protected function setBoardAttribute($board)
     {
         $this->board = app(Board::class)->setSetup($board);
+    }
+
+    public function getBoardSetup()
+    {
+        return json_decode($this->getBoard()->getSetup(), true);
+    }
+
+    public function extractPieceFromPosition(Move $move)
+    {
+        $setup = $this->getBoardSetup();
+
+        if (!isset($setup[$move->getFromCoordinate()])) {
+            throw new Exception('No piece found on given square.');
+        }
+
+        return app(static::$pieceMap[$setup[$move->getFromCoordinate()]]);
     }
 
 }

@@ -46,7 +46,17 @@ class Move
         }
     }
 
-    public function getFullCoordinate() : string
+    public function getFromCoordinate(): string
+    {
+        return $this->fromCoordinate;
+    }
+
+    public function getToCoordinate(): string
+    {
+        return $this->toCoordinate;
+    }
+
+    public function getFullCoordinate(): string
     {
         return $this->fromCoordinate . '-' . $this->toCoordinate;
     }
