@@ -26,15 +26,18 @@ class MoveController extends Controller
     public function move(Request $request)
     {
         try {
-            Chessgame::run(new Move($request->all()), new CacheDriver());
+            $result = Chessgame::run(new Move($request->all()), new CacheDriver());
         } catch (MoveValidationFailed $exception) {
             return response('Wrong move coordinates passed.', 400);
         } catch (Exception $exception) {
             return response('Something went wrong..', 400);
         }
 
-//        event(new MoveMade($request->all()));
+//        if ($result) {
+//            event(new MoveMade($request->all()));
+//        }
 
+        return response()->json($result);
     }
 
 }

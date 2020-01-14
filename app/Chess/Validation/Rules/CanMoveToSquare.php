@@ -11,8 +11,7 @@ class CanMoveToSquare extends AbstractRule
 
     public function checkRule(Position $position, Move $move, AbstractPiece $piece): bool
     {
-
-        if (!$piece->moveInAccordanceToRules($move)) {
+        if (!$piece->moveInAccordanceToRules()) {
             return false;
         }
 

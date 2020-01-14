@@ -21,10 +21,9 @@ class RulesValidator
     public function validate(Position $position, Move $move)
     {
         $piece = $position->extractPieceFromPosition($move);
+        $piece->setPosition($position);
 
-        $this->firstRule->checkRule($position, $move, $piece);
-
-        return false;
+        return $this->firstRule->checkRule($position, $move, $piece);
     }
 
 }

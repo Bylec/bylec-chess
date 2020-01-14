@@ -3,11 +3,12 @@
 namespace App\Chess;
 
 use App\Chess\Pieces\Bishop;
+use App\Chess\Pieces\BlackPawn;
 use App\Chess\Pieces\King;
 use App\Chess\Pieces\Knight;
-use App\Chess\Pieces\Pawn;
 use App\Chess\Pieces\Queen;
 use App\Chess\Pieces\Rook;
+use App\Chess\Pieces\WhitePawn;
 use App\Exceptions\ResolvePositionException;
 use Exception;
 use JsonSerializable;
@@ -23,8 +24,8 @@ class Position implements JsonSerializable
     protected $board = null;
 
     static $pieceMap = [
-        'p' => Pawn::class,
-        'P' => Pawn::class,
+        'p' => WhitePawn::class,
+        'P' => BlackPawn::class,
         'r' => Rook::class,
         'R'=> Rook::class,
         'n' => Knight::class,
@@ -100,11 +101,13 @@ class Position implements JsonSerializable
     {
         $setup = $this->getBoardSetup();
 
-        if (!isset($setup[$move->getFromCoordinate()])) {
+        $letterPieceRepresentation = $setup[$move->getFromCoordinate()];
+
+        if (!isset($letterPieceRepresentation)) {
             throw new Exception('No piece found on given square.');
         }
 
-        return app(static::$pieceMap[$setup[$move->getFromCoordinate()]]);
+        return new static::$pieceMap[$letterPieceRepresentation]($move);
     }
 
 }

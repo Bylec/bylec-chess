@@ -27,5 +27,4 @@ abstract class AbstractRule implements RuleInterface
         return $this->next->checkRule($position, $move, $piece);
     }
 
-
 }
