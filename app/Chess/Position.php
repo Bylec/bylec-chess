@@ -100,7 +100,6 @@ class Position implements JsonSerializable
     public function extractPieceFromPosition(Move $move)
     {
         $setup = $this->getBoardSetup();
-
         $letterPieceRepresentation = $setup[$move->getFromCoordinate()];
 
         if (!isset($letterPieceRepresentation)) {

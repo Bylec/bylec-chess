@@ -31,6 +31,16 @@ abstract class AbstractPiece
         $this->position = $position;
     }
 
+    public function getNextLetter(string $letter): string
+    {
+        return ++$letter;
+    }
+
+    public function getPreviousLetter(string $letter): string
+    {
+        return chr(ord($letter)-1);
+    }
+
     public function getLetterFromCoordinate()
     {
         return $this->letterFromCoordinate;

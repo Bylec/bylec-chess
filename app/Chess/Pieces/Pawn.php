@@ -10,14 +10,7 @@ abstract class Pawn extends AbstractPiece
 
     public function moveInAccordanceToRules(): bool
     {
-
-//        if ($this->isFirstPawnMove()) {
-//            return $this->isWithinFirstMoveMovingRange();
-//        } else {
-
-            return $this->checkMoveRules();
-//        }
-
+        return $this->checkMoveRules();
     }
 
     protected function checkFirstMoveRules(): bool
@@ -27,22 +20,20 @@ abstract class Pawn extends AbstractPiece
 
     protected function isFirstPawnMove(): bool
     {
-        return intval($this->numberFromCoordinate) === static::$pawnFirstLine;
+        return $this->getNumberFromCoordinate() == static::$pawnFirstLine;
     }
 
     protected function isWithinFirstMoveMovingRange(): bool
     {
-        return $this->letterFromCoordinate == $this->letterToCoordinate && in_array($this->numberToCoordinate, static::$firstMoveRange);
+        return $this->getLetterFromCoordinate() == $this->getLetterToCoordinate() && in_array($this->getNumberToCoordinate(), static::$firstMoveRange);
     }
 
-    protected function checkMoveRules()
+    protected function checkMoveRules(): bool
     {
-        \Log::debug($this->letterFromCoordinate == $this->letterToCoordinate && $this->numberFromCoordinate++ == $this->numberToCoordinate);
-        \Log::debug(++$this->letterFromCoordinate == $this->letterToCoordinate && ++$this->numberFromCoordinate == $this->numberToCoordinate);
-        \Log::debug(--$this->letterFromCoordinate == $this->letterToCoordinate && ++$this->numberFromCoordinate == $this->numberToCoordinate);
-        return ($this->letterFromCoordinate == $this->letterToCoordinate && $this->numberFromCoordinate++ == $this->numberToCoordinate) ||
-            (++$this->letterFromCoordinate == $this->letterToCoordinate && ++$this->numberFromCoordinate == $this->numberToCoordinate) ||
-            (--$this->letterFromCoordinate == $this->letterToCoordinate && ++$this->numberFromCoordinate == $this->numberToCoordinate);
+        return $this->checkFirstMoveRules() ||
+            $this->hasMovedOneSquareForward() ||
+            $this->hasCapturedPieceOnTheRight() ||
+            $this->hasCapturedPieceOnTheLeft();
     }
 
 }

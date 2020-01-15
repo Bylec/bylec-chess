@@ -24,7 +24,23 @@ class Board implements JsonSerializable
           "e2": "p",
           "f2": "p",
           "g2": "p",
-          "h2": "p"
+          "h2": "p",
+          "a8": "R",
+          "b8": "N",
+          "c8": "B",
+          "d8": "Q",
+          "e8": "K",
+          "f8": "B",
+          "g8": "N",
+          "h8": "R",
+          "a7": "P",
+          "b7": "P",
+          "c7": "P",
+          "d7": "P",
+          "e7": "P",
+          "f7": "P",
+          "g7": "P",
+          "h7": "P"
         }';
 
     protected $setup;
