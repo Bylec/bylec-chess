@@ -3680,6 +3680,11 @@ __webpack_require__.r(__webpack_exports__);
     Echo.channel('move-made').listen('MoveMade', function (e) {
       chessgame.makeMove(e.move);
     });
+  },
+  methods: {
+    resetPosition: function resetPosition() {
+      console.log('reset position');
+    }
   }
 });
 
@@ -46363,7 +46368,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -46395,7 +46400,7 @@ if (token) {
 
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: '7251cd6892985d1dd30f',
   cluster: 'eu',
@@ -46445,7 +46450,11 @@ function () {
 
       if (this.isAllowedToMove()) {
         this.sendMove([source, target]).then(function (response) {
-          _this.setIsAllowedToMove(false);
+          if (response.data) {
+            _this.setIsAllowedToMove(false);
+          } else {
+            _this.setPreviousPosition(oldPos, false);
+          }
         })["catch"](function (err) {
           _this.setIsAllowedToMove(true);
 

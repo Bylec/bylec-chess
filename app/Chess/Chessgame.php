@@ -4,6 +4,7 @@ namespace App\Chess;
 
 use App\Chess\Drivers\PositionDriverInterface;
 use App\Chess\Validation\RulesValidator;
+use Exception;
 
 class Chessgame
 {
@@ -18,16 +19,45 @@ class Chessgame
         $this->positionDriver = $positionDriver;
     }
 
+    /**
+     * @param Move $move
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
     public function run(Move $move): bool
     {
         $position = $this->positionDriver->getPosition();
+        $piece = $position->extractPieceFromPosition($move);
+        $move->setPiece($piece);
 
-        return $this->validateMove(new RulesValidator(), $position, $move);
+        $isMoveLegal = $this->validateMove(new RulesValidator(), $move, $position);
+
+        if ($isMoveLegal) {
+            $position->makeMove($move);
+            $this->positionDriver->setPosition($position);
+         }
+
+        return $isMoveLegal;
     }
 
-    protected function validateMove(RulesValidator $validator, Position $position, Move $move): bool
+    /**
+     * @param RulesValidator $validator
+     * @param Move $move
+     * @param Position $position
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
+    protected function validateMove(RulesValidator $validator, Move $move, Position $position): bool
     {
-        return $validator->validate($position, $move);
+        if (!$move->getPiece()) {
+            throw new Exception('Move has to have piece set before validating rules');
+        }
+
+        return $validator->validate($move, $position);
     }
 
 }

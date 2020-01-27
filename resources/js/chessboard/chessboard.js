@@ -13,7 +13,11 @@ class chess {
         if (this.isAllowedToMove()) {
             this.sendMove([source, target])
                 .then(response => {
-                    this.setIsAllowedToMove(false)
+                    if (response.data) {
+                        this.setIsAllowedToMove(false)
+                    } else {
+                        this.setPreviousPosition(oldPos, false)
+                    }
                 })
                 .catch(err => {
                     this.setIsAllowedToMove(true)

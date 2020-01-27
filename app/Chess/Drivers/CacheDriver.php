@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Chess\Drivers;
-
 
 use App\Chess\Position;
 use Illuminate\Support\Facades\Cache;
@@ -16,15 +14,12 @@ class CacheDriver implements PositionDriverInterface
      */
     public function getPosition() : Position
     {
-        if (Cache::has('position')) {
-            return Position::resolveToPosition(Cache::get('position'));
-        }
-        return Position::getStartingPosition();
+        return Cache::has('position') ? Cache::get('position') : Position::getStartingPosition();
     }
 
     public function setPosition(Position $position)
     {
-        Cache::put('position', json_encode($position), config('chessgame.cache_duration'));
+        Cache::put('position', $position, config('chessgame.cache_duration'));
     }
 
 }

@@ -1,17 +1,19 @@
 <?php
 
+
 namespace App\Chess\Validation\Rules;
+
 
 use App\Chess\Move;
 use App\Chess\Pieces\AbstractPiece;
 use App\Chess\Position;
 
-class CanMoveToSquare extends AbstractRule
+class NothingInTheWay extends AbstractRule
 {
 
     public function checkRule(Move $move, Position $position): bool
     {
-        if (!$move->getPiece()->moveInAccordanceToRules($move, $position)) {
+        if (!$move->getPiece()->nothingInTheWay()) {
             return false;
         }
 

@@ -10,6 +10,6 @@ interface RuleInterface
 {
 
     public function setNext(AbstractRule $rule): AbstractRule;
-    public function checkRule(Position $position, Move $move, AbstractPiece $piece): bool;
+    public function checkRule(Move $move, Position $position): bool;
 
 }

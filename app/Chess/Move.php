@@ -2,6 +2,7 @@
 
 namespace App\Chess;
 
+use App\Chess\Pieces\AbstractPiece;
 use App\Exceptions\MoveValidationFailed;
 
 class Move
@@ -9,6 +10,13 @@ class Move
 
     protected $fromCoordinate;
     protected $toCoordinate;
+
+    protected $letterFromCoordinate;
+    protected $numberFromCoordinate;
+    protected $letterToCoordinate;
+    protected $numberToCoordinate;
+
+    protected $piece;
 
     /**
      * Move constructor.
@@ -21,6 +29,11 @@ class Move
 
         $this->fromCoordinate = $coordinatePairs[0];
         $this->toCoordinate = $coordinatePairs[1];
+
+        $this->letterFromCoordinate = $this->fromCoordinate[0];
+        $this->numberFromCoordinate = $this->fromCoordinate[1];
+        $this->letterToCoordinate = $this->toCoordinate[0];
+        $this->numberToCoordinate = $this->toCoordinate[1];
     }
 
     protected function validateCoordinatePairs($coordinatePairs)
@@ -46,6 +59,16 @@ class Move
         }
     }
 
+    public function setPiece(AbstractPiece $piece)
+    {
+        $this->piece = $piece;
+    }
+
+    public function getPiece(): AbstractPiece
+    {
+        return $this->piece;
+    }
+
     public function getFromCoordinate(): string
     {
         return $this->fromCoordinate;
@@ -59,6 +82,26 @@ class Move
     public function getFullCoordinate(): string
     {
         return $this->fromCoordinate . '-' . $this->toCoordinate;
+    }
+
+    public function getLetterFromCoordinate()
+    {
+        return $this->letterFromCoordinate;
+    }
+
+    public function getNumberFromCoordinate()
+    {
+        return $this->numberFromCoordinate;
+    }
+
+    public function getLetterToCoordinate()
+    {
+        return $this->letterToCoordinate;
+    }
+
+    public function getNumberToCoordinate()
+    {
+        return $this->numberToCoordinate;
     }
 
 }

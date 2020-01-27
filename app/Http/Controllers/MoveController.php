@@ -10,6 +10,7 @@ use App\Exceptions\MoveValidationFailed;
 use Exception;
 use Facades\App\Chess\Chessgame;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MoveController extends Controller
 {
@@ -30,14 +31,20 @@ class MoveController extends Controller
         } catch (MoveValidationFailed $exception) {
             return response('Wrong move coordinates passed.', 400);
         } catch (Exception $exception) {
+            \Log::debug($exception);
             return response($exception->getMessage(), 400);
         }
 
         if ($result) {
-            event(new MoveMade($request->all()));
+            broadcast(new MoveMade($request->all()))->toOthers();
         }
 
         return response()->json($result);
+    }
+
+    public function restart()
+    {
+        Cache::forget('position');
     }
 
 }

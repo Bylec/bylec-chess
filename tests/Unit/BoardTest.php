@@ -29,16 +29,16 @@ class BoardTest extends TestCase
         $this->assertEquals('setup', $board->getSetup());
     }
 
-    /**
-     * @test
-     */
-    public function sets_setup_when_object_given()
-    {
-        $stdClass = new stdClass();
-        $stdClass->setup = 'setup';
-        $board = app(Board::class)->setSetup($stdClass);
-
-        $this->assertEquals('setup', $board->getSetup());
-    }
+//    /**
+//     * @test
+//     */
+//    public function sets_setup_when_object_given()
+//    {
+//        $stdClass = new stdClass();
+//        $stdClass->setup = 'setup';
+//        $board = app(Board::class)->setSetup($stdClass);
+//
+//        $this->assertEquals('setup', $board->getSetup());
+//    }
 
 }

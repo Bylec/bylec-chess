@@ -18,4 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('move', 'MoveController@move');
+Route::get('restart', 'MoveController@restart');
 Route::get('test', 'MoveController@index');

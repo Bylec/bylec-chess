@@ -15,6 +15,11 @@
                 .listen('MoveMade', (e) => {
                     chessgame.makeMove(e.move)
                 })
+        },
+        methods: {
+            resetPosition() {
+                console.log('reset position');
+            }
         }
     };
 </script>

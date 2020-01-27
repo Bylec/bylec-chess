@@ -2,6 +2,7 @@
 
 namespace App\Chess;
 
+use App\Chess\Pieces\AbstractPiece;
 use App\Chess\Pieces\Bishop;
 use App\Chess\Pieces\BlackPawn;
 use App\Chess\Pieces\King;
@@ -16,12 +17,12 @@ use JsonSerializable;
 class Position implements JsonSerializable
 {
 
-    const WHITE = 'white';
-    const BLACK = 'black';
+    const WHITE = 0;
+    const BLACK = 1;
 
     protected $toMove = null;
-
     protected $board = null;
+    protected $lastMove = null;
 
     static $pieceMap = [
         'p' => WhitePawn::class,
@@ -56,28 +57,38 @@ class Position implements JsonSerializable
         return $this->board;
     }
 
-    public static function resolveToPosition($json) : Position
+    public function setBoard(Board $board)
     {
-        if (!is_string($json)) {
-            throw new ResolvePositionException('Argument of function has to be json string.');
-        }
-
-        $positionJson = json_decode($json);
-        $positionInstance = new self();
-
-        foreach ($positionJson as $property => $value) {
-            if (!property_exists($positionInstance, $property)) continue;
-
-            $methodName = 'set' . ucfirst($property) . 'Attribute';
-            if (method_exists($positionInstance, $methodName)) {
-                $positionInstance->{$methodName}($value);
-            } else {
-                $positionInstance->{$property} = $value;
-            }
-        }
-
-        return $positionInstance;
+        $this->board = $board;
     }
+
+    public function getLastMove(): ?Move
+    {
+        return $this->lastMove;
+    }
+
+    public function setLastMove(Move $move): void
+    {
+        $this->lastMove = $move;
+    }
+
+//    public static function resolveToPosition($position) : Position
+//    {
+//        $positionInstance = new self();
+//
+//        foreach ($position as $property => $value) {
+//            if (!property_exists($positionInstance, $property)) continue;
+//
+//            $methodName = 'set' . ucfirst($property) . 'Attribute';
+//            if (method_exists($positionInstance, $methodName)) {
+//                $positionInstance->{$methodName}($value);
+//            } else {
+//                $positionInstance->{$property} = $value;
+//            }
+//        }
+//
+//        return $positionInstance;
+//    }
 
     public static function getStartingPosition() : Position
     {
@@ -87,26 +98,85 @@ class Position implements JsonSerializable
         return $position;
     }
 
-    protected function setBoardAttribute($board)
-    {
-        $this->board = app(Board::class)->setSetup($board);
-    }
+//    protected function setBoardAttribute($board)
+//    {
+//        $this->board = app(Board::class)->setSetup($board->getSetup());
+//    }
 
     public function getBoardSetup()
     {
-        return json_decode($this->getBoard()->getSetup(), true);
+        return $this->getBoard()->getSetup();
     }
 
-    public function extractPieceFromPosition(Move $move)
+    public function extractPieceFromPosition(Move $move): AbstractPiece
     {
-        $setup = $this->getBoardSetup();
-        $letterPieceRepresentation = $setup[$move->getFromCoordinate()];
+        $letterPieceRepresentation = $this->getLetterPieceRepresentation($move->getFromCoordinate());
 
         if (!isset($letterPieceRepresentation)) {
             throw new Exception('No piece found on given square.');
         }
 
-        return new static::$pieceMap[$letterPieceRepresentation]($move);
+        return new static::$pieceMap[$letterPieceRepresentation];
+    }
+
+    public function isPieceOnSquare(string $square, $oppositeColor = false): bool
+    {
+        $letterPieceRepresentation = $this->getLetterPieceRepresentation($square);
+
+        if (!$letterPieceRepresentation) {
+            return false;
+        }
+
+        if (!$oppositeColor) {
+            return isset($letterPieceRepresentation);
+        }
+
+        if ($this->toMove == self::BLACK) {
+            return $this->isPieceWhite($letterPieceRepresentation);
+        } else {
+            return $this->isPieceBlack($letterPieceRepresentation);
+        }
+    }
+
+    public function checkColorOfPiece($letterPieceRepresentation): int
+    {
+        return ctype_upper($letterPieceRepresentation) ? self::BLACK : self::WHITE;
+    }
+
+    protected function isPieceBlack($letterPieceRepresentation): bool
+    {
+        return $this->checkColorOfPiece($letterPieceRepresentation) === self::BLACK;
+    }
+
+    protected function isPieceWhite($letterPieceRepresentation): bool
+    {
+        return $this->checkColorOfPiece($letterPieceRepresentation) === self::WHITE;
+    }
+
+    protected function getLetterPieceRepresentation(string $fromSquare): ?string
+    {
+        $setup = $this->getBoardSetup();
+        return @$setup[$fromSquare];
+    }
+
+    public function makeMove(Move $move): void
+    {
+        $boardSetup = $this->getBoardSetup();
+
+        $letterPieceRepresentation = $boardSetup[$move->getFromCoordinate()];
+        unset($boardSetup[$move->getFromCoordinate()]);
+        $boardSetup[$move->getToCoordinate()] = $letterPieceRepresentation;
+
+        $board = $this->getBoard();
+        $board->setSetup($boardSetup);
+        $this->setBoard($board);
+        $this->changeToMove();
+        $this->setLastMove($move);
+    }
+
+    public function changeToMove(): void
+    {
+        $this->toMove = $this->toMove == self::WHITE ? self::BLACK : self::WHITE;
     }
 
 }

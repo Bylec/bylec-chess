@@ -4,26 +4,37 @@ namespace App\Chess\Validation;
 
 use App\Chess\Move;
 use App\Chess\Position;
+use App\Chess\Validation\Rules\CanCaptureOnSquare;
 use App\Chess\Validation\Rules\CanMoveToSquare;
+use App\Chess\Validation\Rules\NothingInTheWay;
 
 class RulesValidator
 {
 
     private $firstRule;
 
+    /**
+     * RulesValidator constructor.
+     */
     public function __construct()
     {
-        $rulesChain = new CanMoveToSquare();
+        $canMoveToSquareRule = new CanMoveToSquare();
+        $nothingInTheWayRule = new NothingInTheWay();
+        $canCaptureOnSquareRule = new CanCaptureOnSquare();
 
-        $this->firstRule = $rulesChain;
+        $canMoveToSquareRule->setNext($nothingInTheWayRule)->setNext($canCaptureOnSquareRule);
+
+        $this->firstRule = $canMoveToSquareRule;
     }
 
-    public function validate(Position $position, Move $move)
+    /**
+     * @param Move $move
+     * @param Position $position
+     * @return bool
+     */
+    public function validate(Move $move, Position $position)
     {
-        $piece = $position->extractPieceFromPosition($move);
-        $piece->setPosition($position);
-
-        return $this->firstRule->checkRule($position, $move, $piece);
+        return $this->firstRule->checkRule($move, $position);
     }
 
 }
