@@ -2,10 +2,10 @@
 
 namespace App\Chess;
 
-use App\Chess\Pieces\AbstractPiece;
 use App\Exceptions\MoveValidationFailed;
+use JsonSerializable;
 
-class Move
+class Move implements JsonSerializable
 {
 
     protected $fromCoordinate;
@@ -15,8 +15,6 @@ class Move
     protected $numberFromCoordinate;
     protected $letterToCoordinate;
     protected $numberToCoordinate;
-
-    protected $piece;
 
     /**
      * Move constructor.
@@ -34,6 +32,14 @@ class Move
         $this->numberFromCoordinate = $this->fromCoordinate[1];
         $this->letterToCoordinate = $this->toCoordinate[0];
         $this->numberToCoordinate = $this->toCoordinate[1];
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'fromCoordinate' => $this->fromCoordinate,
+            'toCoordinate' => $this->toCoordinate
+        ];
     }
 
     protected function validateCoordinatePairs($coordinatePairs)
@@ -57,16 +63,6 @@ class Move
             !is_numeric($coordinate[1]) || !ctype_digit($coordinate[1]) || $coordinate[1] < 1 || $coordinate[1] > 8) {
             throw new MoveValidationFailed('Coordinate range must be between a1 and h8.');
         }
-    }
-
-    public function setPiece(AbstractPiece $piece)
-    {
-        $this->piece = $piece;
-    }
-
-    public function getPiece(): AbstractPiece
-    {
-        return $this->piece;
     }
 
     public function getFromCoordinate(): string

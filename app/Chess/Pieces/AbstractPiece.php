@@ -8,6 +8,8 @@ use App\Chess\Position;
 abstract class AbstractPiece
 {
 
+    protected $move;
+
     public function getNextLetter(string $letter): string
     {
         return ++$letter;
@@ -18,7 +20,17 @@ abstract class AbstractPiece
         return chr(ord($letter)-1);
     }
 
-    abstract public function moveInAccordanceToRules(Move $move, Position $position): bool;
-    abstract public function nothingInTheWay(): bool;
+    public function setMove(Move $move)
+    {
+        $this->move = $move;
+    }
+
+    public function getMove()
+    {
+        return $this->move;
+    }
+
+    abstract public function nothingInTheWay(Position $position): bool;
+    abstract public function moveInAccordanceToRules(): bool;
 
 }

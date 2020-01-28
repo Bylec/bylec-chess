@@ -30,6 +30,11 @@ class chess {
         }
     }
 
+    getCurrentPosition()
+    {
+        return this.board.position()
+    }
+
     setPreviousPosition(oldPos)
     {
         this.board.position(oldPos, false)

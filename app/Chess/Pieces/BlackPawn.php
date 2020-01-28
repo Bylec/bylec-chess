@@ -6,7 +6,7 @@ class BlackPawn extends Pawn
 {
 
     static $pawnFirstLine = 7;
-    static $firstMoveRange = [5, 6];
+    static $firstMoveRange = [6, 5];
     static $colorThirdLine = 6;
     static $enPassantLine = 4;
 

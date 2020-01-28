@@ -2,13 +2,11 @@
 
 namespace App\Chess\Validation\Rules;
 
-use App\Chess\Move;
 use App\Chess\Pieces\AbstractPiece;
 use App\Chess\Position;
 
 abstract class AbstractRule implements RuleInterface
 {
-
 
     private $next;
 
@@ -19,13 +17,13 @@ abstract class AbstractRule implements RuleInterface
         return $rule;
     }
 
-    public function checkRule(Move $move, Position $position): bool
+    public function checkRule(AbstractPiece $piece, Position $position): bool
     {
         if (!$this->next) {
             return true;
         }
 
-        return $this->next->checkRule($move, $position);
+        return $this->next->checkRule($piece, $position);
     }
 
 }

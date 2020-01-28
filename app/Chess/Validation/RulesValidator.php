@@ -3,6 +3,7 @@
 namespace App\Chess\Validation;
 
 use App\Chess\Move;
+use App\Chess\Pieces\AbstractPiece;
 use App\Chess\Position;
 use App\Chess\Validation\Rules\CanCaptureOnSquare;
 use App\Chess\Validation\Rules\CanMoveToSquare;
@@ -32,9 +33,9 @@ class RulesValidator
      * @param Position $position
      * @return bool
      */
-    public function validate(Move $move, Position $position)
+    public function validate(AbstractPiece $piece, Position $position)
     {
-        return $this->firstRule->checkRule($move, $position);
+        return $this->firstRule->checkRule($piece, $position);
     }
 
 }

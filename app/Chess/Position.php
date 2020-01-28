@@ -43,7 +43,8 @@ class Position implements JsonSerializable
     {
         return [
             'toMove' => $this->toMove,
-            'board' => $this->board
+            'board' => $this->board,
+            'lastMove' => $this->lastMove
         ];
     }
 
@@ -108,12 +109,12 @@ class Position implements JsonSerializable
         return $this->getBoard()->getSetup();
     }
 
-    public function extractPieceFromPosition(Move $move): AbstractPiece
+    public function extractPieceFromPosition(string $square): AbstractPiece
     {
-        $letterPieceRepresentation = $this->getLetterPieceRepresentation($move->getFromCoordinate());
+        $letterPieceRepresentation = $this->getLetterPieceRepresentation($square);
 
         if (!isset($letterPieceRepresentation)) {
-            throw new Exception('No piece found on given square.');
+            return null;
         }
 
         return new static::$pieceMap[$letterPieceRepresentation];

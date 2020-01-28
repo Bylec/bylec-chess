@@ -13,30 +13,32 @@ abstract class Pawn extends AbstractPiece
     static $colorThirdLine = null;
     static $enPassantLine = null;
 
-    public function moveInAccordanceToRules(Move $move, Position $position): bool
+    public function nothingInTheWay($position): bool
+    {
+        if ($this->isFirstPawnMove() && $this->movedTwoSquaresForward()) {
+            return !$position->isPieceOnSquare($this->move->getLetterToCoordinate() . static::$colorThirdLine);
+        }
+
+        if (!$this->capturingPossibility()) {
+            return !$position->isPieceOnSquare($this->move->getToCoordinate());
+        }
+
+       return true;
+    }
+
+    public function moveInAccordanceToRules(): bool
     {
         return $this->checkMoveRules();
     }
 
-    public function nothingInTheWay(): bool
+    public function canCaptureOnSquare(Position $position)
     {
-        if ($this->isFirstPawnMove() && $this->movedTwoSquaresForward()) {
-            return !$this->position->isPieceOnSquare($this->move->getLetterToCoordinate() . static::$colorThirdLine);
-        }
-
-        if ($this->hasMovedOneSquareForward()) {
-            return !$this->position->isPieceOnSquare($this->move->getToCoordinate());
-        }
-
-        return true;
+        return (($this->hasCapturedPieceOnTheLeft() || $this->hasCapturedPieceOnTheRight())
+                && ($position->isPieceOnSquare($this->move->getToCoordinate(), true) || $this->lastMoveAllowsEnPassant($position)))
+                || $this->moveIsWithinSameLine();
     }
 
-    public function canCaptureOnSquare()
-    {
-        return (($this->hasCapturedPieceOnTheLeft() || $this->hasCapturedPieceOnTheRight()) && ($this->position->isPieceOnSquare($this->move->getToCoordinate(), true) || $this->lastMoveAllowsEnPassant())) || $this->moveIsWithinSameLine();
-    }
-
-    protected function checkMoveRules(): bool
+    public function checkMoveRules(): bool
     {
         return $this->checkFirstMoveRules() ||
             $this->hasMovedOneSquareForward() ||
@@ -83,11 +85,16 @@ abstract class Pawn extends AbstractPiece
         return $this->move->getLetterFromCoordinate() === $this->move->getLetterToCoordinate();
     }
 
-    protected function lastMoveAllowsEnPassant()
+    protected function lastMoveAllowsEnPassant(Position $position)
     {
-        $lastMove = $this->position->getLastMove();
+        $lastMove = $position->getLastMove();
+        $lastMovePiece = $position->extractPieceFromPosition($lastMove->getToCoordinate());
+        $lastMovePiece->setMove($lastMove);
 
-        return $this->move->getFromCoordinate() === static::$enPassantLine;
+        return $this->move->getNumberFromCoordinate() == static::$enPassantLine
+            && $this->move->getLetterToCoordinate() === $lastMove->getLetterToCoordinate()
+            && $lastMovePiece->isFirstPawnMove()
+            && $lastMovePiece->movedTwoSquaresForward();
     }
 
 }

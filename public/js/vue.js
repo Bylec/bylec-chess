@@ -3679,6 +3679,7 @@ __webpack_require__.r(__webpack_exports__);
     });
     Echo.channel('move-made').listen('MoveMade', function (e) {
       chessgame.makeMove(e.move);
+      console.log(chessgame.getCurrentPosition());
     });
   },
   methods: {
@@ -3915,7 +3916,7 @@ function fromByteArray (uint8) {
 /* WEBPACK VAR INJECTION */(function(global) {/*!
  * The buffer module from node.js, for the browser.
  *
- * @author   Feross Aboukhadijeh <http://feross.org>
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
  * @license  MIT
  */
 /* eslint-disable no-proto */
@@ -46467,6 +46468,12 @@ function () {
       }
     }
   }, {
+    key: "getCurrentPosition",
+    value: function getCurrentPosition() {
+      console.log(this.board.position());
+      return this.board.position();
+    }
+  }, {
     key: "setPreviousPosition",
     value: function setPreviousPosition(oldPos) {
       this.board.position(oldPos, false);
@@ -46802,7 +46809,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/bylec-chess/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/owls/Sites/bylec-chess/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })
