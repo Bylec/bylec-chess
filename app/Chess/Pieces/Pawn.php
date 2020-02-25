@@ -31,10 +31,10 @@ abstract class Pawn extends AbstractPiece
         return $this->checkMoveRules();
     }
 
-    public function canCaptureOnSquare(Position $position)
+    public function canCaptureOnSquare(Position $position): bool
     {
         return (($this->hasCapturedPieceOnTheLeft() || $this->hasCapturedPieceOnTheRight())
-                && ($position->isPieceOnSquare($this->move->getToCoordinate(), true) || $this->lastMoveAllowsEnPassant($position)))
+                && ($position->isOppositeColorPieceOnSquare($this->move->getToCoordinate()) || $this->lastMoveAllowsEnPassant($position)))
                 || $this->moveIsWithinSameLine();
     }
 
@@ -62,7 +62,7 @@ abstract class Pawn extends AbstractPiece
 
     protected function isWithinFirstMoveMovingRange(): bool
     {
-        return $this->move->getLetterFromCoordinate() == $this->move->getLetterToCoordinate() && in_array($this->move->getNumberToCoordinate(), static::$firstMoveRange);
+        return $this->move->letterCoordinatesAreEqual() && in_array($this->move->getNumberToCoordinate(), static::$firstMoveRange);
     }
 
     protected function capturingPossibility(): bool
@@ -82,12 +82,14 @@ abstract class Pawn extends AbstractPiece
 
     protected function moveIsWithinSameLine(): bool
     {
-        return $this->move->getLetterFromCoordinate() === $this->move->getLetterToCoordinate();
+        return $this->move->letterCoordinatesAreEqual();
     }
 
     protected function lastMoveAllowsEnPassant(Position $position)
     {
         $lastMove = $position->getLastMove();
+
+        /** @var Pawn $lastMovePiece */
         $lastMovePiece = $position->extractPieceFromPosition($lastMove->getToCoordinate());
         $lastMovePiece->setMove($lastMove);
 

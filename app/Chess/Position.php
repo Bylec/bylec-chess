@@ -22,6 +22,8 @@ class Position implements JsonSerializable
 
     protected $toMove = null;
     protected $board = null;
+
+    /** @var Move */
     protected $lastMove = null;
 
     static $pieceMap = [
@@ -120,24 +122,49 @@ class Position implements JsonSerializable
         return new static::$pieceMap[$letterPieceRepresentation];
     }
 
-    public function isPieceOnSquare(string $square, $oppositeColor = false): bool
+    public function isPieceOnSquare(string $coordinate): bool
     {
-        $letterPieceRepresentation = $this->getLetterPieceRepresentation($square);
+        $letterPieceRepresentation = $this->getLetterPieceRepresentation($coordinate);
 
         if (!$letterPieceRepresentation) {
             return false;
         }
 
-        if (!$oppositeColor) {
-            return isset($letterPieceRepresentation);
+        return true;
+    }
+
+    public function isPieceOnSquares(array $squares): bool
+    {
+        $squaresCollection = collect($squares);
+
+        $boardSetup = $this->getBoardSetup();
+
+        return $squaresCollection->count() != $squaresCollection->intersect($boardSetup)->count();
+    }
+
+    public function isSameColorPieceOnSquare(string $coordinate)
+    {
+        $letterPieceRepresentation = $this->getLetterPieceRepresentation($coordinate);
+
+        if (!$letterPieceRepresentation) {
+            return false;
         }
 
-        if ($this->toMove == self::BLACK) {
-            return $this->isPieceWhite($letterPieceRepresentation);
-        } else {
-            return $this->isPieceBlack($letterPieceRepresentation);
-        }
+        return $this->toMove == self::WHITE ? $this->isPieceWhite($letterPieceRepresentation) : $this->isPieceBlack($letterPieceRepresentation);
     }
+
+    public function isOppositeColorPieceOnSquare(string $coordinate)
+    {
+        $letterPieceRepresentation = $this->getLetterPieceRepresentation($coordinate);
+
+        if (!$letterPieceRepresentation) {
+            return false;
+        }
+
+        return $this->toMove == self::BLACK ? $this->isPieceWhite($letterPieceRepresentation) : $this->isPieceBlack($letterPieceRepresentation);
+    }
+
+
 
     public function checkColorOfPiece($letterPieceRepresentation): int
     {

@@ -100,4 +100,14 @@ class Move implements JsonSerializable
         return $this->numberToCoordinate;
     }
 
+    public function letterCoordinatesAreEqual(): bool
+    {
+        return $this->getLetterFromCoordinate() == $this->getLetterToCoordinate();
+    }
+
+    public function numberCoordinatesAreEqual(): bool
+    {
+        return $this->getNumberFromCoordinate() == $this->getNumberToCoordinate();
+    }
+
 }

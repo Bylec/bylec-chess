@@ -8,6 +8,7 @@ use App\Chess\Position;
 abstract class AbstractPiece
 {
 
+    /** @var Move */
     protected $move;
 
     public function getNextLetter(string $letter): string
@@ -32,5 +33,6 @@ abstract class AbstractPiece
 
     abstract public function nothingInTheWay(Position $position): bool;
     abstract public function moveInAccordanceToRules(): bool;
+    abstract public function canCaptureOnSquare(Position $position): bool;
 
 }
