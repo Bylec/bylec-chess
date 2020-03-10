@@ -164,8 +164,6 @@ class Position implements JsonSerializable
         return $this->toMove == self::BLACK ? $this->isPieceWhite($letterPieceRepresentation) : $this->isPieceBlack($letterPieceRepresentation);
     }
 
-
-
     public function checkColorOfPiece($letterPieceRepresentation): int
     {
         return ctype_upper($letterPieceRepresentation) ? self::BLACK : self::WHITE;
