@@ -10,13 +10,10 @@ use App\Chess\Pieces\Knight;
 use App\Chess\Pieces\Queen;
 use App\Chess\Pieces\Rook;
 use App\Chess\Pieces\WhitePawn;
-use App\Exceptions\ResolvePositionException;
-use Exception;
 use JsonSerializable;
 
 class Position implements JsonSerializable
 {
-
     const WHITE = 0;
     const BLACK = 1;
 
@@ -93,6 +90,11 @@ class Position implements JsonSerializable
 //        return $positionInstance;
 //    }
 
+//    protected function setBoardAttribute($board)
+//    {
+//        $this->board = app(Board::class)->setSetup($board->getSetup());
+//    }
+
     public static function getStartingPosition() : Position
     {
         $position = new self();
@@ -100,11 +102,6 @@ class Position implements JsonSerializable
         $position->board = app(Board::class)->setStartingSetup();
         return $position;
     }
-
-//    protected function setBoardAttribute($board)
-//    {
-//        $this->board = app(Board::class)->setSetup($board->getSetup());
-//    }
 
     public function getBoardSetup()
     {
@@ -122,6 +119,15 @@ class Position implements JsonSerializable
         return new static::$pieceMap[$letterPieceRepresentation];
     }
 
+    public function noPiecesOnSquares(array $squares): bool
+    {
+        $squaresCollection = collect($squares)->values();
+
+        $boardSetup = collect($this->getBoardSetup())->keys();
+
+        return $boardSetup->count() == $boardSetup->diff($squaresCollection)->count();
+    }
+
     public function isPieceOnSquare(string $coordinate): bool
     {
         $letterPieceRepresentation = $this->getLetterPieceRepresentation($coordinate);
@@ -131,15 +137,6 @@ class Position implements JsonSerializable
         }
 
         return true;
-    }
-
-    public function isPieceOnSquares(array $squares): bool
-    {
-        $squaresCollection = collect($squares);
-
-        $boardSetup = $this->getBoardSetup();
-
-        return $squaresCollection->count() != $squaresCollection->intersect($boardSetup)->count();
     }
 
     public function isSameColorPieceOnSquare(string $coordinate)
@@ -204,5 +201,4 @@ class Position implements JsonSerializable
     {
         $this->toMove = $this->toMove == self::WHITE ? self::BLACK : self::WHITE;
     }
-
 }

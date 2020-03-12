@@ -10,11 +10,11 @@ class Rook extends AbstractPiece
     {
         $coordinatesToCheck = $this->getCoordinatesToCheck();
 
-        if (empty($coordinatesToCheck)) {
+        if (is_null($coordinatesToCheck)) {
             return false;
         }
 
-        return !($position->isPieceOnSquares($coordinatesToCheck) || $position->isSameColorPieceOnSquare($this->move->getToCoordinate()));
+        return $position->noPiecesOnSquares($coordinatesToCheck) && !$position->isSameColorPieceOnSquare($this->move->getToCoordinate());
     }
 
     public function moveInAccordanceToRules(): bool
@@ -24,7 +24,7 @@ class Rook extends AbstractPiece
 
     public function canCaptureOnSquare(Position $position): bool
     {
-        return true;
+        return $position->isOppositeColorPieceOnSquare($this->move->getToCoordinate()) || $this->moveInAccordanceToRules();
     }
 
     protected function getCoordinatesToCheck(): array
@@ -37,20 +37,34 @@ class Rook extends AbstractPiece
             return $this->getHorizontalCoordinates();
         }
 
-        return [];
+        return null;
     }
 
     protected function getHorizontalCoordinates()
     {
-        return collect(range($this->move->getLetterFromCoordinate(), $this->getPreviousLetter($this->move->getLetterToCoordinate())))->map(function($letter) {
-            return $letter . $this->move->getNumberFromCoordinate();
-        })->toArray();
+        $sortedCoordinates = collect([$this->move->getLetterFromCoordinate(), $this->move->getLetterToCoordinate()])
+            ->sort();
+        $range = range($sortedCoordinates->first(), $sortedCoordinates->last());
+        return collect($range)
+            ->reject(function($value, $key) use ($range) {
+                return $key == 0 || $key == count($range) - 1;
+            })
+            ->map(function ($letter) {
+                return $letter . $this->move->getNumberFromCoordinate();
+            })->toArray();
     }
 
     protected function getVerticalCoordinates()
     {
-        return collect(range($this->move->getNumberFromCoordinate(), $this->move->getNumberToCoordinate() - 1))->map(function ($number) {
-            return $this->move->getLetterFromCoordinate() . $number;
-        })->toArray();
+        $sortedCoordinates = collect([$this->move->getNumberFromCoordinate(), $this->move->getNumberToCoordinate()])
+            ->sort();
+        $range = range($sortedCoordinates->first(), $sortedCoordinates->last());
+        return collect($range)
+            ->reject(function($value, $key) use ($range) {
+                return $key == 0 || $key == count($range) - 1;
+            })
+            ->map(function ($number) {
+                return $this->move->getLetterFromCoordinate() . $number;
+            })->toArray();
     }
 }

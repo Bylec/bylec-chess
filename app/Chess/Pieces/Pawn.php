@@ -35,7 +35,7 @@ abstract class Pawn extends AbstractPiece
     {
         return (($this->hasCapturedPieceOnTheLeft() || $this->hasCapturedPieceOnTheRight())
                 && ($position->isOppositeColorPieceOnSquare($this->move->getToCoordinate()) || $this->lastMoveAllowsEnPassant($position)))
-                || $this->moveIsWithinSameLine();
+                || $this->moveInAccordanceToRules();
     }
 
     public function checkMoveRules(): bool
