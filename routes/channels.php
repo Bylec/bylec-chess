@@ -16,7 +16,5 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('presence-move-made.{id}', function ($user, $streamId) {
-    \Log::debug('inside channel');
-    \Log::debug($streamId);
     return false;
-}, ['guards' => ['web']]);
+});

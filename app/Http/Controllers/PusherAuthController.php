@@ -16,9 +16,6 @@ class PusherAuthController extends Controller
             array('cluster' => env('PUSHER_APP_CLUSTER'))
         );
 
-        \Log::debug(__METHOD__);
-        \Log::debug($request->get('channel_name'));
-
         return $pusher->presence_auth(
             $request->get('channel_name'),
             $request->get('socket_id'),
