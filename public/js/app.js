@@ -19667,10 +19667,10 @@ module.exports = g;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/owls/Sites/bylec-chess/node_modules/popper.js/dist/popper.min.js */"./node_modules/popper.js/dist/popper.min.js");
-__webpack_require__(/*! /Users/owls/Sites/bylec-chess/node_modules/bootstrap/dist/js/bootstrap.js */"./node_modules/bootstrap/dist/js/bootstrap.js");
-__webpack_require__(/*! /Users/owls/Sites/bylec-chess/node_modules/@chrisoakman/chessboardjs/dist/chessboard-1.0.0.js */"./node_modules/@chrisoakman/chessboardjs/dist/chessboard-1.0.0.js");
-module.exports = __webpack_require__(/*! /Users/owls/Sites/bylec-chess/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/tomasz.kunach/Sites/bylec-chess/node_modules/popper.js/dist/popper.min.js */"./node_modules/popper.js/dist/popper.min.js");
+__webpack_require__(/*! /Users/tomasz.kunach/Sites/bylec-chess/node_modules/bootstrap/dist/js/bootstrap.js */"./node_modules/bootstrap/dist/js/bootstrap.js");
+__webpack_require__(/*! /Users/tomasz.kunach/Sites/bylec-chess/node_modules/@chrisoakman/chessboardjs/dist/chessboard-1.0.0.js */"./node_modules/@chrisoakman/chessboardjs/dist/chessboard-1.0.0.js");
+module.exports = __webpack_require__(/*! /Users/tomasz.kunach/Sites/bylec-chess/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

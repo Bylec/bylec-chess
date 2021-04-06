@@ -11,10 +11,29 @@
                 position: 'start',
             })
 
-            Echo.channel('move-made')
+            // Echo.private('move-made.5')
+            //     .listen('MoveMade', (e) => {
+            //         chessgame.makeMove(e.move)
+            //         console.log(chessgame.getCurrentPosition())
+            //         console.log('ele')
+            //     })
+
+            Echo.join('move-made.5')
+                .here((users) => {
+                    console.log('here');
+                    console.log(users);
+                })
+                .joining((user) => {
+                    console.log('joining');
+                    console.log(user);
+                })
+                .leaving((user) => {
+                    console.log('leaving');
+                    console.log(user);
+                })
                 .listen('MoveMade', (e) => {
+                    console.log('making move');
                     chessgame.makeMove(e.move)
-                    console.log(chessgame.getCurrentPosition())
                 })
         },
         methods: {

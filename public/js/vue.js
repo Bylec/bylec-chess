@@ -3676,10 +3676,25 @@ __webpack_require__.r(__webpack_exports__);
     var chessgame = new _js_chessboard_chessboard_js__WEBPACK_IMPORTED_MODULE_0__["default"]('board', {
       draggable: true,
       position: 'start'
-    });
-    Echo.channel('move-made').listen('MoveMade', function (e) {
+    }); // Echo.private('move-made.5')
+    //     .listen('MoveMade', (e) => {
+    //         chessgame.makeMove(e.move)
+    //         console.log(chessgame.getCurrentPosition())
+    //         console.log('ele')
+    //     })
+
+    Echo.join('move-made.5').here(function (users) {
+      console.log('here');
+      console.log(users);
+    }).joining(function (user) {
+      console.log('joining');
+      console.log(user);
+    }).leaving(function (user) {
+      console.log('leaving');
+      console.log(user);
+    }).listen('MoveMade', function (e) {
+      console.log('making move');
       chessgame.makeMove(e.move);
-      console.log(chessgame.getCurrentPosition());
     });
   },
   methods: {
@@ -46405,7 +46420,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: '7251cd6892985d1dd30f',
   cluster: 'eu',
-  encrypted: true
+  encrypted: false,
+  authEndpoint: 'api/pusher/auth'
 });
 
 /***/ }),
@@ -46470,7 +46486,6 @@ function () {
   }, {
     key: "getCurrentPosition",
     value: function getCurrentPosition() {
-      console.log(this.board.position());
       return this.board.position();
     }
   }, {
@@ -46809,7 +46824,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/owls/Sites/bylec-chess/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/tomasz.kunach/Sites/bylec-chess/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

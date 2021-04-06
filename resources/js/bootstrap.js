@@ -38,5 +38,6 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '7251cd6892985d1dd30f',
     cluster: 'eu',
-    encrypted: true
+    encrypted: false,
+    authEndpoint: 'api/pusher/auth'
 });

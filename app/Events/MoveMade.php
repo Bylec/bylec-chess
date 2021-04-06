@@ -33,6 +33,6 @@ class MoveMade implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('move-made');
+        return new PresenceChannel('move-made.5');
     }
 }
